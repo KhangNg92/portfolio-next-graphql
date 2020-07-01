@@ -1,0 +1,14 @@
+
+/server/config/dev.ts
+
+#dependencies
+/node_modules
+
+/.next/
+/out/
+
+/build
+
+.DS_Store
+.env*
+
