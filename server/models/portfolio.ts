@@ -1,12 +1,13 @@
 // import { createSchema, typedModel } from "ts-mongoose";
 import { prop, getModelForClass } from "@typegoose/typegoose";
+import { Schema } from "mongoose";
 
 class Portfolio {
   @prop({ required: true, maxLength: 128 })
   title: string;
   @prop({ required: true, maxLength: 64 })
   company: string;
-  @prop({ required: true, maxLength: 128 })
+  @prop({ maxLength: 128 })
   companyWebsite: string;
   @prop({ required: true, maxLength: 128 })
   location: string;
@@ -20,6 +21,8 @@ class Portfolio {
   endDate?: Date;
   @prop({ default: Date.now })
   createdAt?: Date;
+  @prop({ type: Schema.Types.ObjectId, ref: "User" })
+  user;
 }
 
 export const PortfolioModel = getModelForClass(Portfolio);

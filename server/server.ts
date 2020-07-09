@@ -9,14 +9,15 @@ import { portFolioTypes, userTypes } from "./graphql/types";
 import {
   portfolioQueries,
   portfolioMutations,
-  userMutations
+  userMutations,
+  userQueries
 } from "./graphql/resolvers";
 import { DB } from "./config/dev";
 import { buildAuthContext } from "./graphql/context";
 import { User } from "./graphql/models/User";
+// import { Portfolio, PortfoModel } from "./graphql/models/Portfolio";
 import { init } from "./middlewares";
 import { UserModel } from "./models/User";
-import passport from "passport";
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -46,9 +47,10 @@ app.prepare().then(() => {
     ${portFolioTypes}
     ${userTypes}
     type Query {
-      hello: String
       portfolio(id: ID): Portfolio
       portfolios: [Portfolio]
+      userPortfolios: [Portfolio]
+      user: User
     }
 
     type Mutation {
@@ -65,7 +67,8 @@ app.prepare().then(() => {
   // The root provides a resolver for each API endpoint
   const resolvers = {
     Query: {
-      ...portfolioQueries
+      ...portfolioQueries,
+      ...userQueries
     },
     Mutation: {
       ...portfolioMutations,
@@ -76,12 +79,15 @@ app.prepare().then(() => {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({
-      ...buildAuthContext(req),
-      models: {
-        User: new User(UserModel)
-      }
-    })
+    context: ({ req }) => {
+      return {
+        ...buildAuthContext(req),
+        models: {
+          User: new User(UserModel)
+        },
+        req
+      };
+    }
   });
   apolloServer.applyMiddleware({ app: server });
 

@@ -5,16 +5,33 @@ export class User {
   constructor(model) {
     this.Model = model;
   }
-  signUp(signUpData) {
+
+  getAuthUser(ctx) {
+    if (ctx.isAuthenticated()) {
+      return ctx.getUser();
+    }
+    return null;
+  }
+
+  async signUp(signUpData) {
     if (signUpData.password !== signUpData.passwordConfirmation) {
       throw new Error("Password must be the same as confirmation password!");
     }
-    return UserModel.create(signUpData);
+
+    try {
+      return await UserModel.create(signUpData);
+    } catch (error) {
+      if (error.code && error.code === 11000) {
+        throw new Error("User with provided email already exists!");
+      }
+      throw error;
+    }
   }
 
   async signIn(signInData, { authenticate }) {
     try {
-      return await authenticate(signInData);
+      const user = await authenticate(signInData);
+      return user;
     } catch (error) {
       return error;
     }
@@ -22,13 +39,7 @@ export class User {
 
   signOut(ctx) {
     try {
-      console.log("BEFORE LOGOUT ========");
-      console.log("IS AUTHENTICATED", ctx.isAuthenticated());
-      console.log("user", ctx.getUser());
       ctx.logout();
-      console.log("AFTER LOGOUT ========");
-      console.log("IS AUTHENTICATED", ctx.isAuthenticated());
-      console.log("user", ctx.getUser());
       return true;
     } catch (error) {
       console.log(error);

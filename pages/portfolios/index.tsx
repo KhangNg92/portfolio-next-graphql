@@ -8,34 +8,26 @@ import { GET_PORTFOLIOS } from "apollo/queries";
 import {
   deletePortfoAction,
   updatePortfoAction,
-  createPortfoAction
+  createPortfoAction,
+  useGetPortfolios
 } from "apollo/actions";
+import BaseLayout from "../../layout/BaseLayout";
+import withApollo from "../../hoc/withApollo";
 
 const Porfolios = () => {
-  const [deletePortfo] = deletePortfoAction();
+  const { data } = useGetPortfolios();
+  const portfolios = (data && data.portfolios) || [];
 
-  const [updatePortfo] = updatePortfoAction();
-
-  const [createPortfolio] = createPortfoAction();
-
-  const { loading, error, data } = useQuery(GET_PORTFOLIOS);
-
-  if (loading) return "Loading....";
-
-  const { portfolios } = data;
+  // if (loading) return <div>"Loading...."</div>;
 
   return (
-    <>
+    <BaseLayout>
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
             <h1>Portfolios</h1>
           </div>
         </div>
-        <button onClick={() => createPortfolio()} className="btn btn-primary">
-          Create Porfolio
-        </button>
-        <hr />
       </section>
       <section className="pb-5">
         <div className="row">
@@ -46,35 +38,12 @@ const Porfolios = () => {
                   <PortfolioCard portolio={portfolio} />
                 </a>
               </Link>
-
-              <br />
-              <div className="action-button-container">
-                <button
-                  className="btn btn-outline-success btn-sm button-edit"
-                  onClick={() =>
-                    updatePortfo({ variables: { id: portfolio._id } })
-                  }
-                >
-                  <img className="edit-icon" src="/edit-pencil.png" alt="" />{" "}
-                  Update Portfo
-                </button>
-                {"       "}
-                <button
-                  className="btn btn-outline-danger btn-sm"
-                  onClick={() =>
-                    deletePortfo({ variables: { id: portfolio._id } })
-                  }
-                >
-                  <img className="edit-icon" src="/criss-cross.png" alt="" />
-                  {"  "}
-                  Delete Portfo
-                </button>
-              </div>
+              <div className="action-button-container"></div>
             </div>
           ))}
         </div>
       </section>
-    </>
+    </BaseLayout>
   );
 };
 
@@ -82,4 +51,4 @@ const Porfolios = () => {
 //   // return fetchPortfolios();
 // };
 
-export default Porfolios;
+export default withApollo(Porfolios);

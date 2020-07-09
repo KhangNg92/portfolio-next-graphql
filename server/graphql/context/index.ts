@@ -16,6 +16,7 @@ const authenticateUser = (req, options) => {
 
       return reject(new Error("Invalid password or email!"));
     };
+
     const authFn = passport.authenticate("graphql", options, done);
     authFn();
   });
@@ -24,9 +25,7 @@ const authenticateUser = (req, options) => {
 export const buildAuthContext = req => {
   const auth = {
     authenticate: options => authenticateUser(req, options),
-    logout: () => {
-      return req.logout();
-    },
+    logout: () => req.logout(),
     isAuthenticated: () => req.isAuthenticated(),
     getUser: () => req.user
   };

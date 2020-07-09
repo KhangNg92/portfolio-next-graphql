@@ -8,7 +8,7 @@ const initSessionStore = () => {
   const initStore = MongoDbStore(session);
   return new initStore({
     uri: DB,
-    collection: "portfolioSession"
+    collection: "portfolioSessions"
   });
 };
 
@@ -19,7 +19,7 @@ export const init = server => {
     name: "portfolio-session",
     secret: SESSION_SECRET,
     cookie: { maxAge: 2 * 60 * 60 * 1000 },
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     store: initSessionStore()
   };

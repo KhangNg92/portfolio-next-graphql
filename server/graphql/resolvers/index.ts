@@ -4,6 +4,8 @@ import { User } from "../models/User";
 // Function from User Class
 // const { signUp, signIn, signOut } = User.prototype;
 
+const writeRights = ["instructor", "admin"];
+
 export const portfolioQueries = {
   // Get 1 portfolio
   portfolio: (root, { id }) => {
@@ -11,22 +13,30 @@ export const portfolioQueries = {
   },
 
   // get a list of portfolio
-  portfolios: (root, args) => {
+  portfolios: () => {
     return PortfolioModel.find();
+  },
+  userPortfolios: (root, args, { getUser }) => {
+    return PortfolioModel.find({ user: getUser()._id }).sort({
+      startDate: "desc"
+    });
   }
 };
 
 export const portfolioMutations = {
-  createPortfolio: async (root, { input }) => {
-    const createdPortfo = await PortfolioModel.create(input);
-    return createdPortfo;
+  createPortfolio: (root, { input }, { getUser }) => {
+    if (!getUser() || !writeRights.includes(getUser().role)) {
+      throw new Error("Not Authorized!");
+    }
+    input.user = getUser();
+    return PortfolioModel.create(input);
   },
 
   updatePortfolio: async (root, { id, input }) => {
     const updatedPortfolio = await PortfolioModel.findOneAndUpdate(
       { _id: id },
       input,
-      { new: true }
+      { new: true, runValidators: true }
     );
     return updatedPortfolio;
   },
@@ -37,7 +47,16 @@ export const portfolioMutations = {
   }
 };
 
-const { signUp, signIn, signOut } = User.prototype;
+// USER
+
+const { signUp, signIn, signOut, getAuthUser } = User.prototype;
+
+export const userQueries = {
+  // Get 1 portfolio
+  user: (root, { id }, ctx) => {
+    return getAuthUser(ctx);
+  }
+};
 
 export const userMutations = {
   signIn: (root, { input }, ctx) => {
@@ -66,7 +85,7 @@ GRAPHQL query example
          jobTitle
          description
      }
-  
+
     portfolio(id:"sad87da79") {
          _id,
          title,

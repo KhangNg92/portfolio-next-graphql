@@ -1,36 +1,16 @@
 import "../styles/index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import App from "next/app";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
 
 // Components
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-
 const MyApp = ({
   Component: { name },
   Component,
   pageProps,
   pageProps: { appData }
 }) => {
-  const client = new ApolloClient({
-    uri: "http://localhost:3000/graphql"
-  });
-
-  return (
-    <ApolloProvider client={client}>
-      <div className="portfolio-app">
-        <Navbar />
-
-        {name === "Home" && <Hero />}
-        <div className="container">
-          <Component {...pageProps} />
-        </div>
-      </div>
-    </ApolloProvider>
-  );
+  return <Component {...pageProps} />;
 };
 
 /* 

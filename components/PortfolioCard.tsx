@@ -1,4 +1,5 @@
 import React from "react";
+import { formatDate } from "utils/constants";
 
 const PortfolioCard = ({
   portolio: { title, jobTitle, description, startDate, endDate }
@@ -12,7 +13,7 @@ const PortfolioCard = ({
       </div>
       <div className="card-footer no-border">
         <small className="text-muted">
-          {startDate} - {endDate}
+          {formatDate(startDate)} - {endDate ? formatDate(endDate) : "Present"}
         </small>
       </div>
     </div>

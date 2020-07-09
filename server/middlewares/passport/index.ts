@@ -1,6 +1,7 @@
 import { GraphQLStrategy } from "./strategy";
 import { UserModel } from "../../models/User";
 import { Passport } from "passport";
+import { GraphQLLocalStrategy } from "graphql-passport";
 
 export const initStrategy = passport => {
   passport.serializeUser((user, done) => {
@@ -18,7 +19,6 @@ export const initStrategy = passport => {
     new GraphQLStrategy(({ email, password }, done) => {
       // 1. Find user in DB and if user exists verify user password
       // If user is verified call "done"
-
       UserModel.findOne({ email }, (error, user) => {
         if (error) return done(error);
         if (!user) return done(null, false);

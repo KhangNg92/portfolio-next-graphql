@@ -2,12 +2,18 @@ import RegisterForm from "@/components/RegisterForm";
 import { useMutation } from "@apollo/react-hooks";
 import { SIGN_UP } from "apollo/queries";
 import { useRouter } from "next/dist/client/router";
+import BaseLayout from "../layout/BaseLayout";
+import withApollo from "../hoc/withApollo";
+import { messages } from "utils/constants";
 
 const Register = () => {
   const router = useRouter();
   const [register, { data, error }] = useMutation(SIGN_UP, {
     onCompleted() {
-      router.push("/login");
+      router.push({
+        pathname: "/login",
+        query: { message: Object.keys(messages)[2] }
+      });
     },
     onError() {
       return;
@@ -15,7 +21,7 @@ const Register = () => {
   });
 
   return (
-    <div className="container">
+    <BaseLayout>
       <div className="bwm-form mt-5">
         <div className="row">
           <div className="col-md-5 mx-auto">
@@ -33,8 +39,8 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </div>
+    </BaseLayout>
   );
 };
 
-export default Register;
+export default withApollo(Register);

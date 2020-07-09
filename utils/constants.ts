@@ -1,3 +1,19 @@
+import moment from "moment";
+
+export const messages = {
+  NOT_AUTHENTICATED: {
+    value: "You need to login to get access",
+    status: "danger"
+  },
+  NOT_AUTHORIZED: {
+    value: "You are not authorized to visit this page!",
+    status: "danger"
+  },
+  LOGGED_IN: {
+    value: "You have been successfuly registered, you can log in now",
+    status: "success"
+  }
+};
 export const data = {
   portfolios: [
     {
@@ -38,6 +54,7 @@ export const data = {
 
 export const portfoFields = `
         title
+        daysOfExperience @client
         company
         companyWebsite
         location
@@ -80,4 +97,6 @@ export const portfolios = [
   }
 ];
 
-export const users = [];
+export const formatDate = date => {
+  return moment.unix(date / 1000).format("MM/DD/YYYY");
+};

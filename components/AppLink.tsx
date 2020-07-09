@@ -7,19 +7,22 @@ type ApplinkProps = {
     href: string;
     className?: string;
     button?: boolean;
+    onClick?: Function;
+    as?: string;
   }>;
 };
 const AppLink: FC<ApplinkProps> = ({ titlesAndHref }) => {
   return (
     <>
-      {titlesAndHref.map(({ title, href, className, button }) => (
-        <Link href={href} key={title}>
+      {titlesAndHref.map(({ title, href, className, button, onClick, as }) => (
+        <Link href={href} key={title} as={as}>
           <a
             className={
-              className === "navbar-brand"
+              ["navbar-brand", "dropdown-item"].includes(className)
                 ? className
                 : `mr-3 ${!button && "nav-link"} ${className}`
             }
+            onClick={() => (onClick ? onClick() : "")}
           >
             {title}
           </a>

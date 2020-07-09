@@ -1,6 +1,8 @@
+import BaseLayout from "../../../layout/BaseLayout";
+
 const Posts = () => {
   return (
-    <>
+    <BaseLayout>
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -156,8 +158,7 @@ const Posts = () => {
           </div>
         </div>
       </section>
-    </>
+    </BaseLayout>
   );
 };
-
 export default Posts;

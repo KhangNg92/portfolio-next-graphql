@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/react-hoc": "^3.1.5",
     "@apollo/react-hooks": "^3.1.5",
+    "@apollo/react-ssr": "^3.1.5",
     "@typegoose/typegoose": "^7.2.0",
     "@types/bcrypt": "^3.0.0",
     "@types/connect-mongodb-session": "0.0.3",
@@ -37,6 +39,8 @@
     "express-graphql": "^0.9.0",
     "express-session": "^1.17.1",
     "graphql": "^15.0.0",
+    "graphql-passport": "^0.6.3",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.18",
     "next": "^9.4.2",
     "next-with-apollo": "^5.0.1",
@@ -46,9 +50,13 @@
     "passport-strategy": "^1.0.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
+    "react-datepicker": "^3.0.0",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.7.2",
-    "ts-mongoose": "0.0.21"
+    "react-toastify": "^6.0.8",
+    "ts-mongoose": "0.0.21",
+    "universal-cookie": "^4.0.3"
   },
   "devDependencies": {
     "tsconfig-paths": "^3.9.0",

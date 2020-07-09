@@ -19,16 +19,25 @@ export const GET_PORTFOLIOS = gql`
 `;
 
 export const CREATE_PORTFOLIO = gql`
-mutation CreatePortfolio {
+mutation CreatePortfolio(
+  $title: String
+  $company: String
+      $companyWebsite: String
+      $location: String
+      $jobTitle: String
+      $description: String
+      $startDate: String
+      $endDate: String
+) {
   createPortfolio(input: {
-      title: "Software Eng",
-      company: "Google",
-      companyWebsite: "www.google.com",
-      location: "Fenton, MO",
-      jobTitle: "Engineer",
-      description: "Doing something, programing....",
-      startDate: "01/01/2014",
-      endDate: "01/01/2016"
+      title: $title
+      company: $company
+      companyWebsite: $companyWebsite
+      location: $location
+      jobTitle: $jobTitle
+      description: $description
+      startDate: $startDate
+      endDate: $endDate
   }) {
     _id
     ${portfoFields}
@@ -37,12 +46,28 @@ mutation CreatePortfolio {
 `;
 
 export const UPDATE_PORTFOLIO = gql`
-  mutation UpdatePortfolio($id: ID) {
-    updatePortfolio(id: $id, input: { title: "Updated Software Eng 1" }) {
-      _id
-      title
-      description
-      location
+  mutation UpdatePortfolio($id: ID
+    $title: String
+    $company: String
+        $companyWebsite: String
+        $location: String
+        $jobTitle: String
+        $description: String
+        $startDate: String
+        $endDate: String
+    
+    ) {
+    updatePortfolio(id: $id, input: { 
+       title: $title
+    company: $company
+        companyWebsite: $companyWebsite
+        location: $location
+        jobTitle: $jobTitle
+        description: $description
+        startDate: $startDate
+        endDate: $endDate
+    }) {
+     ${portfoFields}
     }
   }
 `;
@@ -50,6 +75,18 @@ export const UPDATE_PORTFOLIO = gql`
 export const DELETE_PORTFO = gql`
   mutation DeletePortfolio($id: ID) {
     deletePortfolio(id: $id)
+  }
+`;
+
+export const GET_USER_PORTFOLIOS = gql`
+  query UserPortfolios {
+    userPortfolios {
+      _id
+      title
+      jobTitle
+      startDate
+      endDate
+    }
   }
 `;
 
@@ -75,4 +112,30 @@ export const SIGN_UP = gql`
   }
 `;
 
+export const SIGN_IN = gql`
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(input: { email: $email, password: $password }) {
+      _id
+      userName
+      role
+      avatar
+    }
+  }
+`;
+
+export const SIGN_OUT = gql`
+  mutation SignOut {
+    signout
+  }
+`;
+
+export const GET_USER = gql`
+  query User {
+    user {
+      _id
+      userName
+      role
+    }
+  }
+`;
 /* AUTH QUERIES END ------ */
